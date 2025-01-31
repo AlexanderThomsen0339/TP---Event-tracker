@@ -1,0 +1,34 @@
+CREATE DATABASE Event_Tracker;
+
+USE Event_Tracker;
+
+CREATE TABLE Users (
+    User_ID INT PRIMARY KEY IDENTITY(1,1),
+    Username VARCHAR(255) NOT NULL,
+    Password VARCHAR(255) NOT NULL
+);
+
+CREATE TABLE Event (
+    Event_ID INT PRIMARY KEY IDENTITY(1,1),
+    Event_Name VARCHAR(255) NOT NULL,
+    Event_Start_Time DATETIME NOT NULL,
+    Location_ID INT UNIQUE
+);
+
+CREATE TABLE User_events (
+    User_event_ID INT PRIMARY KEY IDENTITY(1,1),
+    User_ID INT NOT NULL,
+    Event_ID INT NOT NULL,
+    FOREIGN KEY (User_ID) REFERENCES Users(User_ID) ON DELETE CASCADE,
+    FOREIGN KEY (Event_ID) REFERENCES Event(Event_ID) ON DELETE CASCADE
+);
+
+CREATE TABLE Location (
+    Location_ID INT PRIMARY KEY IDENTITY(1,1),
+    Location_Name VARCHAR(255) NOT NULL,
+    Location_LatLong VARCHAR(255) NOT NULL
+);
+
+ALTER TABLE Event 
+ADD CONSTRAINT FK_Event_Location FOREIGN KEY (Location_ID) 
+REFERENCES Location(Location_ID) ON DELETE SET NULL;
