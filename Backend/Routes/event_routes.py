@@ -1,18 +1,10 @@
 from flask import Blueprint, jsonify
-from flasgger import swag_from
 
-event_bp = Blueprint('event', __name__)
+# Define the event_routes Blueprint
+event_bp = Blueprint('event_routes', __name__)
 
-@event_bp.route('/hello', methods=['GET'])
-@swag_from({
-    'responses': {
-        200: {
-            'description': 'A simple hello world response',
-            'examples': {
-                'application/json': {"message": "Hello, World!"}
-            }
-        }
-    }
-})
-def hello_world():
-    return jsonify({"message": "Hello, World!"})
+# Define the /events route
+@event_bp.route('/events', methods=['GET'])
+def get_events():
+    # Return a sample list of events in JSON format
+    return jsonify([{"id": 1, "name": "Concert"}, {"id": 2, "name": "Festival"}])
