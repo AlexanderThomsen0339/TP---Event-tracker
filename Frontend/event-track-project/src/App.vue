@@ -1,10 +1,63 @@
 <template>
-  <nav>
-    <router-link to="/">Home</router-link> |
-    <router-link to="/about">About</router-link>
-  </nav>
-  <router-view/>
+  <div id="app">
+    <MainMenubar v-if="!loggedIn" />
+    <LoggedInMenubar v-else />
+    <router-view />
+  </div>
 </template>
+
+<script>
+import { ref, watchEffect } from 'vue'
+import MainMenubar from './components/MainMenubar.vue'
+import LoggedInMenubar from './components/LoggedInMenubar.vue'
+import { globalAuthState } from './router/index' // Importer global state korrekt
+
+export default {
+  name: 'App',
+  components: {
+    MainMenubar,
+    LoggedInMenubar
+  },
+  setup () {
+    const loggedIn = ref(globalAuthState.loggedIn) // Brug global state
+
+    // Opdater loggedIn når globalAuthState ændres
+    watchEffect(() => {
+      loggedIn.value = globalAuthState.loggedIn
+    })
+
+    // Tilføj latitude og longitude som reactive variabler
+    const latitude = ref(null)
+    const longitude = ref(null)
+
+    // Metode til at hente brugerens geolokation
+    const getLocation = () => {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          (position) => {
+            latitude.value = position.coords.latitude
+            longitude.value = position.coords.longitude
+          },
+          (error) => {
+            console.error('Error getting location:', error)
+          }
+        )
+      } else {
+        console.error('Geolocation is not supported by this browser.')
+      }
+    }
+
+    // Kald getLocation, når komponenten er oprettet
+    getLocation()
+
+    return {
+      loggedIn,
+      latitude,
+      longitude
+    }
+  }
+}
+</script>
 
 <style>
 #app {
@@ -12,19 +65,5 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
-  color: #2c3e50;
-}
-
-nav {
-  padding: 30px;
-}
-
-nav a {
-  font-weight: bold;
-  color: #2c3e50;
-}
-
-nav a.router-link-exact-active {
-  color: #42b983;
 }
 </style>

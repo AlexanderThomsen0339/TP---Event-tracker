@@ -8,27 +8,25 @@ CREATE TABLE Users (
     Password VARCHAR(255) NOT NULL
 );
 
-CREATE TABLE Event (
-    Event_ID INT PRIMARY KEY IDENTITY(1,1),
-    Event_Name VARCHAR(255) NOT NULL,
-    Event_Start_Time DATETIME NOT NULL,
-    Location_ID INT UNIQUE
-);
-
-CREATE TABLE User_events (
-    User_event_ID INT PRIMARY KEY IDENTITY(1,1),
-    User_ID INT NOT NULL,
-    Event_ID INT NOT NULL,
-    FOREIGN KEY (User_ID) REFERENCES Users(User_ID) ON DELETE CASCADE,
-    FOREIGN KEY (Event_ID) REFERENCES Event(Event_ID) ON DELETE CASCADE
-);
-
-CREATE TABLE Location (
+CREATE TABLE Locations (
     Location_ID INT PRIMARY KEY IDENTITY(1,1),
     Location_Name VARCHAR(255) NOT NULL,
     Location_LatLong VARCHAR(255) NOT NULL
 );
 
-ALTER TABLE Event 
-ADD CONSTRAINT FK_Event_Location FOREIGN KEY (Location_ID) 
-REFERENCES Location(Location_ID) ON DELETE SET NULL;
+CREATE TABLE Events (
+    Event_ID INT PRIMARY KEY IDENTITY(1,1),
+    Event_Name VARCHAR(255) NOT NULL,
+    Event_Start_Time DATETIME NOT NULL,
+    Location_ID INT NOT NULL,
+    API_ID VARCHAR(255) UNIQUE NOT NULL,
+    FOREIGN KEY (Location_ID) REFERENCES Locations(Location_ID)
+);
+
+CREATE TABLE UserEvents (
+    User_event_ID INT PRIMARY KEY IDENTITY(1,1),
+    User_ID INT NOT NULL,
+    Event_ID INT NOT NULL,
+    FOREIGN KEY (User_ID) REFERENCES Users(User_ID),
+    FOREIGN KEY (Event_ID) REFERENCES Events(Event_ID)
+);
