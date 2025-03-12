@@ -12,6 +12,8 @@ class Database:
 
     def create_connection(self):
         try:
+            print(str(os.getenv("DRIVER")))
+            print(str(os.getenv("DATABASE")))
             driver = os.getenv("DRIVER")
             database = os.getenv("DATABASE")
             conn_str = f'driver={driver};server=(LocalDb)\\MSSQLLocalDB;database={database};trusted_connection=yes;'

@@ -14,6 +14,8 @@ def user_login(username, password):
         return {"error": "User not found"}, 404  
 
     stored_password = user["password"]
+    print("Brugerens password fra DB:", stored_password)
+    print("Type af stored_password:", type(stored_password))
     if not bcrypt.checkpw(password.encode(), stored_password.encode()):
         return {"error": "Incorrect password"}, 401  
 
@@ -45,6 +47,7 @@ def user_create(username, password):
 
     # Hash the password
     hashed_password = bcrypt.hashpw(password.encode(), bcrypt.gensalt()).decode('utf-8')
+    
 
     try:
         user_reposetory.create_user(username, hashed_password)

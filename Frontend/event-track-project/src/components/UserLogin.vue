@@ -30,7 +30,7 @@ export default {
             username: this.username,
             password: this.password
           },
-          { withCredentials: true } // Sørg for at cookies sendes med
+          { withCredentials: true } // Sørger for at cookies sendes med
         )
 
         console.log('Login successful:', response.data)

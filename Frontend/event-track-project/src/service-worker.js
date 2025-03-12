@@ -3,7 +3,7 @@ import { NetworkFirst } from 'workbox-strategies'
 import { CacheableResponsePlugin } from 'workbox-cacheable-response'
 import { ExpirationPlugin } from 'workbox-expiration'
 
-// Cache kun det specifikke API-endpoint, du bruger
+// Cache kun det specifikke API-endpoint, jeg bruger
 registerRoute(
   ({ url }) => url.pathname === '/api/events/get_users_within_radius',
   new NetworkFirst({
